@@ -1,9 +1,40 @@
 import pandas as pd
-from docxtpl import DocxTemplate,RichText
 from docx import Document
 from docx.oxml.ns import qn
 from docx.shared import Pt,RGBColor
+import tkinter as tk
+from tkinter import filedialog
 import re
+from tkinter import *
+import tkinter.messagebox
+ 
+def getInput(title, message):
+  def return_callback(event):
+    print('quit...')
+    root.quit()
+  def close_callback():
+    tkinter.messageBox.showinfo('message', 'no click...')
+  root = Tk(className=title)
+  root.wm_attributes('-topmost', 1)
+  screenwidth, screenheight = root.maxsize()
+  width = 300
+  height = 100
+  size = '%dx%d+%d+%d' % (width, height, (screenwidth - width)/2, (screenheight - height)/2)
+  root.geometry(size)
+  root.resizable(0, 0)
+  lable = Label(root, height=2)
+  lable['text'] = message
+  lable.pack()
+  entry = Entry(root)
+  entry.bind('<Return>', return_callback)
+  entry.pack()
+  entry.focus_set()
+  root.protocol("WM_DELETE_WINDOW", close_callback)
+  root.mainloop()
+  str = entry.get()
+  root.destroy()
+  return str
+
 # *一些基础设置与函数
 def number(str_list):
     # *将一开始的编号删除
@@ -16,7 +47,9 @@ def number(str_list):
 def addnumber(listresult,doc,title):
     # *将对应数值按照列开始放入
     result=list()
-    doc.add_paragraph(title)
+    paragraph1 = doc.add_paragraph()  # 创建一个段落对象
+    run1 = paragraph1.add_run(title)
+    run1.font.bold = True
     for i in range(len(listresult)):
         doc.add_paragraph(str(i+1)+'.'+listresult[i])
 def readdata(dict_list,number):
@@ -53,14 +86,20 @@ if __name__ == '__main__':
     doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
     doc.styles['Normal'].font.size = Pt(10.5)
     doc.styles['Normal'].font.color.rgb = RGBColor(0,0,0)
-
+    root = tk.Tk()
+    root.withdraw()
+    # 获取文件夹路径
+    f_path = filedialog.askopenfilename()
+    Folderpath = filedialog.askdirectory() #获得选择好的文件夹
+    print(Folderpath)
     # * 这里开始使用
-    data = pd.read_excel('meetingtest.xlsx')
+    data = pd.read_excel(f_path)
     dict_list = data.to_dict(orient="records")
+    txt=getInput('auto-excel-to-word','输入你想给文件的命名')
     """
     data_dict[2]开始是王贺
     """
-    wordname='result.docx'
+    wordname=Folderpath+'/'+txt+'.docx'
     people=['王贺','刘婧恬','杨彬彬','桂羽','李峥','胡梦恬','卜苗苗','邢玉婷']
     # 这里添加的上周工作小结
     # 王贺、刑玉婷、桂羽 封装,对应0，3，7
@@ -76,7 +115,6 @@ if __name__ == '__main__':
     listpr=number(pr)
     listfengzhuang=number(fengzhuang)
     # 注意不能有空白段落
-    doc.add_paragraph('下周计划')
     addnumber(listpr,doc,'PR与innovus脚本调试方面：')
     addnumber(listfengzhuang,doc,'封装工作方面：')
     doc.save(wordname)
