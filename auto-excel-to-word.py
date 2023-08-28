@@ -41,7 +41,7 @@ def number(str_list):
     test=list()
     for i in range(len(str_list)):
         for j in range(len(str_list[i])):
-            pattern=re.compile(r'[0-9]+.')
+            pattern=re.compile(r'^[0-9].')
             test.append(pattern.sub("",str_list[i][j]))
     return test
 def addnumber(listresult,doc,title):
@@ -58,8 +58,10 @@ def readdata(dict_list,number):
     missionwithname=list()
     missions=list()
     for i in range(len(people)):
-        mission.append(dict_list[2+i]['Unnamed: '+str(number)])
+        if dict_list[2+i]['Unnamed: '+str(number)]!=None:
+            mission.append(dict_list[2+i]['Unnamed: '+str(number)])
         #这里放number3与5
+    print(mission)
     for i in range(len(mission)):
         missionwithname.append(re.sub('\n','【'+people[i]+'】'+'\n',mission[i])+'【'+people[i]+'】')
     for i in range(len(missionwithname)):
@@ -82,9 +84,9 @@ def splitbyprandfengzhuang(missions):
 
 if __name__ == '__main__':
     doc=Document()
-    doc.styles['Normal'].font.name = u'宋体'
-    doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
-    doc.styles['Normal'].font.size = Pt(10.5)
+    doc.styles['Normal'].font.name = u'仿宋'
+    doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'仿宋')
+    doc.styles['Normal'].font.size = Pt(11.5)
     doc.styles['Normal'].font.color.rgb = RGBColor(0,0,0)
     root = tk.Tk()
     root.withdraw()
