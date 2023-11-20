@@ -44,14 +44,17 @@ def number(str_list):
             pattern=re.compile(r'^[0-9].')
             test.append(pattern.sub("",str_list[i][j]))
     return test
-def addnumber(listresult,doc,title):
+def addnumber(listresult,doc,title,paragraphnum,trueorfalse):
     # *将对应数值按照列开始放入
     result=list()
     paragraph1 = doc.add_paragraph()  # 创建一个段落对象
     run1 = paragraph1.add_run(title)
     run1.font.bold = True
     for i in range(len(listresult)):
-        doc.add_paragraph(str(i+1)+'.'+listresult[i])
+        if trueorfalse:
+            doc.add_paragraph(str(paragraphnum)+'.'+str(i+1)+'.'+listresult[i])
+        else:
+            doc.add_paragraph(str(i+1)+'.'+listresult[i])
 def readdata(dict_list,number):
     # * 最开始读取数据的位置，将某一列的数值进行读取，然后将每一条目分开变成数组,分开的数组为missions
     mission=list()
@@ -109,15 +112,22 @@ if __name__ == '__main__':
     fengzhuang,pr=splitbyprandfengzhuang(missions)
     listpr=number(pr)
     listfengzhuang=number(fengzhuang)
-    addnumber(listpr,doc,'PR与innovus脚本调试方面：')
-    addnumber(listfengzhuang,doc,'封装工作方面：')
+    doc.add_paragraph("本周完成工作")
+    doc.add_paragraph("1、后端方向")
+    addnumber(listpr,doc,'PR与innovus脚本调试方面：',1,0)
+    addnumber(listpr,doc,'PR与innovus脚本调试方面：',1,1)
+    addnumber(listfengzhuang,doc,'封装工作方面：',1,0)
+    addnumber(listfengzhuang,doc,'封装工作方面：',2,1)
     doc.save(wordname)
     missions=readdata(dict_list,5)
     fengzhuang,pr=splitbyprandfengzhuang(missions)
     listpr=number(pr)
     listfengzhuang=number(fengzhuang)
     # 注意不能有空白段落
-    addnumber(listpr,doc,'PR与innovus脚本调试方面：')
-    addnumber(listfengzhuang,doc,'封装工作方面：')
+    doc.add_paragraph("下周计划")
+    doc.add_paragraph("1、后端方向")
+    addnumber(listpr,doc,'PR与innovus脚本调试方面：',1,0)
+    addnumber(listfengzhuang,doc,'封装工作方面：',1,0)
+    addnumber(listpr,doc,'PR与innovus脚本调试方面：',1,1)
+    addnumber(listfengzhuang,doc,'封装工作方面：',2,1)
     doc.save(wordname)
-
