@@ -102,20 +102,19 @@ if __name__ == '__main__':
     dict_list = data.to_dict(orient="records")
     txt=getInput('auto-excel-to-word','输入你想给文件的命名')
     """
-    data_dict[2]开始是王贺
+    data_dict[2]开始是people1
     """
     wordname=Folderpath+'/'+txt+'.docx'
-    people=['王贺','刘婧恬','杨彬彬','桂羽','李峥','胡梦恬','卜苗苗','邢玉婷']
+    people=['people1','people2','people3','people4','people5','people6','people7','people8']
     # 这里添加的上周工作小结
-    # 王贺、刑玉婷、桂羽 封装,对应0，3，7
     missions=readdata(dict_list,3)
     fengzhuang,pr=splitbyprandfengzhuang(missions)
     listpr=number(pr)
     listfengzhuang=number(fengzhuang)
     doc.add_paragraph("本周完成工作")
-    doc.add_paragraph("1、后端方向")
-    addnumber(listpr,doc,'PR与innovus脚本调试方面：',1,0)
-    addnumber(listfengzhuang,doc,'封装工作方面：',1,0)
+    doc.add_paragraph("1、xx方向")
+    addnumber(listpr,doc,'xx与xxxx脚本调试方面：',1,0)
+    addnumber(listfengzhuang,doc,'封x工作方面：',1,0)
     doc.save(wordname)
     missions=readdata(dict_list,5)
     fengzhuang,pr=splitbyprandfengzhuang(missions)
@@ -123,7 +122,7 @@ if __name__ == '__main__':
     listfengzhuang=number(fengzhuang)
     # 注意不能有空白段落
     doc.add_paragraph("下周计划")
-    doc.add_paragraph("1、后端方向")
-    addnumber(listpr,doc,'PR与innovus脚本调试方面：',1,0)
-    addnumber(listfengzhuang,doc,'封装工作方面：',1,0)
+    doc.add_paragraph("1、xx方向")
+    addnumber(listpr,doc,'xx与xxxx脚本调试方面：',1,0)
+    addnumber(listfengzhuang,doc,'封x工作方面：',1,0)
     doc.save(wordname)
